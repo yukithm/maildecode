@@ -1,13 +1,32 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io"
 	"os"
 
 	"golang.org/x/text/transform"
 )
 
+type Options struct {
+	Version bool
+}
+
+var cmdOptions Options
+
+func init() {
+	flag.BoolVar(&cmdOptions.Version, "version", false, "Print version")
+}
+
 func main() {
+	flag.Parse()
+
+	if cmdOptions.Version {
+		fmt.Printf("maildecode %s\n", Version)
+		return
+	}
+
 	normalizer := &NewlineNormalizer{
 		Newline: []byte("\r\n"),
 	}
