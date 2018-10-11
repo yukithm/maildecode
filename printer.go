@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/textproto"
+	"sort"
 )
 
 func PrintMessage(w io.Writer, msg *Message) {
@@ -19,7 +20,14 @@ func PrintMessage(w io.Writer, msg *Message) {
 }
 
 func PrintHeader(w io.Writer, header textproto.MIMEHeader) {
-	for name, values := range header {
+	keys := make([]string, 0, len(header))
+	for k := range header {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, name := range keys {
+		values := header[name]
 		for _, value := range values {
 			fmt.Fprintf(w, "%s: %s\n", name, value)
 		}
