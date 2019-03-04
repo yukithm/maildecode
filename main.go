@@ -35,10 +35,14 @@ func main() {
 
 	if len(os.Args) > 1 {
 		for _, file := range os.Args[1:] {
-			printFile(w, file)
+			if err := printFile(w, file); err != nil {
+				panic(err)
+			}
 		}
 	} else {
-		printMail(w, os.Stdin)
+		if err := printMail(w, os.Stdin); err != nil {
+			panic(err)
+		}
 	}
 
 }

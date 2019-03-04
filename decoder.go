@@ -27,7 +27,9 @@ func (m *Message) ContentType() string {
 }
 
 func (m *Message) MediaType() (string, map[string]string, error) {
-	return mime.ParseMediaType(m.ContentType())
+	// Fix invalid form
+	contentType := strings.ReplaceAll(m.ContentType(), ";;", ";")
+	return mime.ParseMediaType(contentType)
 }
 
 func DecodeMail(input io.Reader) (*Message, error) {
